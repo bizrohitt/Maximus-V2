@@ -25,14 +25,41 @@ class CustomBlock(models.Model):
     description = models.TextField(blank=True)
     template_html = models.TextField(help_text="HTML template with {{ config.field_name }} placeholders")
     default_config = models.JSONField(default=dict, blank=True)
+    config_schema = models.JSONField(
+        default=dict,
+        blank=True,
+        help_text="JSON Schema defining configurable fields for this block"
+    )
+    category = models.CharField(
+        max_length=50,
+        default='general',
+        choices=[
+            ('layout', 'Layout'),
+            ('content', 'Content'),
+            ('media', 'Media'),
+            ('forms', 'Forms'),
+            ('commerce', 'Commerce'),
+            ('general', 'General'),
+        ]
+    )
+    icon = models.CharField(max_length=50, default='cube', help_text="Icon identifier for UI")
     is_active = models.BooleanField(default=True)
     created_at = models.DateTimeField(default=timezone.now)
+    updated_at = models.DateTimeField(auto_now=True)
 
     class Meta:
-        ordering = ['name']
+        ordering = ['category', 'name']
 
     def __str__(self):
         return self.name
+    
+    def render(self, config=None):
+        """Render the block with given configuration"""
+        from django.template import Context, Template
+        config_data = config or self.default_config
+        template = Template(self.template_html)
+        context = Context({'config': config_data})
+        return template.render(context)
 
 
 class BlockInstance(models.Model):

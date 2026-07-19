@@ -70,3 +70,82 @@ def save_page(request, page_id):
         return JsonResponse({'success': False, 'error': 'Invalid JSON data'}, status=400)
     except Exception as e:
         return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@staff_member_required
+def preview_page(request, page_id):
+    """Preview the page with all blocks rendered"""
+    page = get_object_or_404(CustomPage, id=page_id)
+    block_instances = BlockInstance.objects.filter(page=page).select_related('block').order_by('position')
+    
+    rendered_blocks = []
+    for instance in block_instances:
+        try:
+            rendered_html = instance.block.render(instance.config)
+            rendered_blocks.append({
+                'id': str(instance.id),
+                'name': instance.block.name,
+                'html': rendered_html
+            })
+        except Exception as e:
+            rendered_blocks.append({
+                'id': str(instance.id),
+                'name': instance.block.name,
+                'html': f'<div class="error">Error rendering block: {str(e)}</div>'
+            })
+    
+    return render(request, 'cms_custom/preview.html', {
+        'page': page,
+        'rendered_blocks': rendered_blocks,
+    })
+
+
+@staff_member_required
+@csrf_exempt
+def delete_block(request, page_id, block_instance_id):
+    """Delete a block instance from a page"""
+    if request.method != 'DELETE':
+        return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
+    
+    try:
+        block_instance = BlockInstance.objects.get(id=block_instance_id, page_id=page_id)
+        block_instance.delete()
+        
+        # Reorder remaining blocks
+        remaining_blocks = BlockInstance.objects.filter(page_id=page_id).order_by('position')
+        for index, block in enumerate(remaining_blocks):
+            block.position = index
+            block.save(update_fields=['position'])
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Block deleted successfully'
+        })
+    except BlockInstance.DoesNotExist:
+        return JsonResponse({'success': False, 'error': 'Block not found'}, status=404)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
+
+
+@staff_member_required
+@csrf_exempt
+def reorder_blocks(request, page_id):
+    """Reorder blocks on a page"""
+    if request.method != 'POST':
+        return JsonResponse({'success': False, 'error': 'Invalid request method'}, status=400)
+    
+    try:
+        data = json.loads(request.body)
+        block_order = data.get('block_order', [])  # List of block instance IDs in desired order
+        
+        for index, block_id in enumerate(block_order):
+            BlockInstance.objects.filter(id=block_id, page_id=page_id).update(position=index)
+        
+        return JsonResponse({
+            'success': True,
+            'message': 'Blocks reordered successfully'
+        })
+    except json.JSONDecodeError:
+        return JsonResponse({'success': False, 'error': 'Invalid JSON data'}, status=400)
+    except Exception as e:
+        return JsonResponse({'success': False, 'error': str(e)}, status=500)
