@@ -56,6 +56,10 @@ INSTALLED_APPS = [
     # 'apps.blog',  # requires wagtail
     'apps.admin_api',
     'apps.custom_admin',
+    'apps.cms_custom',
+    'apps.keyword_research',
+    'apps.seo_audit',
+    'apps.website_speed',
 ]
 
 MIDDLEWARE = [

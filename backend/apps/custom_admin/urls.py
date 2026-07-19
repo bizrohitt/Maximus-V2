@@ -6,6 +6,7 @@ app_name = 'custom_admin'
 urlpatterns = [
     path('', views.dashboard_overview, name='dashboard'),
     path('content/', views.section_content, name='content'),
+    path('content/cms/', views.content_management, name='content_management'),
     path('commerce/', views.section_commerce, name='commerce'),
     path('ai-tools/', views.section_ai_tools, name='ai_tools'),
     path('marketing/', views.section_marketing, name='marketing'),

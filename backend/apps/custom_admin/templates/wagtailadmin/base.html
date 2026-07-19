@@ -1,0 +1,15 @@
+{% extends "wagtailadmin/base.html" %}
+
+{% block branding_logo %}
+    <div style="display: flex; align-items: center; gap: 8px;">
+        <div style="width: 28px; height: 28px; background: #B5300A; border-radius: 6px; display: flex; align-items: center; justify-content: center;">
+            <span style="color: white; font-weight: bold; font-size: 18px;">M</span>
+        </div>
+        <span style="font-weight: 600; font-size: 18px; color: #111827;">Maximus</span>
+    </div>
+{% endblock %}
+
+{% block extra_css %}
+    {{ block.super }}
+    <link rel="stylesheet" href="/static/custom_admin/css/wagtail-custom.css">
+{% endblock %}

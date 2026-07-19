@@ -1,0 +1,31 @@
+/* Custom styles to make Wagtail blend with Maximus Admin Dashboard */
+
+:root {
+    --color-secondary: #B5300A;
+}
+
+/* Change Wagtail header color */
+.wagtail-header {
+    background-color: #111827 !important;
+}
+
+/* Sidebar styling */
+.wagtail-sidebar {
+    background-color: #1F2937 !important;
+}
+
+/* Active menu item */
+.wagtail-sidebar .menu-item.active {
+    background-color: #B5300A !important;
+    color: white !important;
+}
+
+/* Buttons */
+.button {
+    background-color: #B5300A !important;
+    border-color: #B5300A !important;
+}
+
+.button:hover {
+    background-color: #9C2A08 !important;
+}

@@ -142,3 +142,9 @@ def section_settings(request):
         'site_settings': site_settings,
         'maintenance_mode': maintenance_mode,
     })
+
+
+@staff_member_required
+def content_management(request):
+    """Embed Wagtail CMS inside the Custom Admin Dashboard."""
+    return render(request, 'custom_admin/content_management.html')

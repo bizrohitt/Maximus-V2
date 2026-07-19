@@ -1,0 +1,30 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}Content Management{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto">
+    <div class="mb-6">
+        <h1 class="text-3xl font-bold text-gray-900">Content Management</h1>
+        <p class="text-gray-600">Manage your pages and blog posts using Wagtail CMS.</p>
+    </div>
+
+    <!-- Instructions -->
+    <div class="bg-blue-50 border border-blue-200 rounded-2xl p-4 mb-6">
+        <p class="text-sm text-blue-700">
+            <i class="fa fa-info-circle mr-2"></i>
+            You are now using Wagtail CMS inside the Maximus Admin Dashboard. 
+            All content management features are available here.
+        </p>
+    </div>
+
+    <!-- Wagtail CMS Embedded -->
+    <div class="bg-white border rounded-2xl overflow-hidden shadow-sm" style="height: 800px;">
+        <iframe 
+            src="/cms/" 
+            style="width: 100%; height: 100%; border: none;"
+            title="Wagtail CMS">
+        </iframe>
+    </div>
+</div>
+{% endblock %}

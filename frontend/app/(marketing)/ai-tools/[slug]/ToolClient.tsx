@@ -6,11 +6,13 @@ import { Button } from '@/components/ui/Button/Button'
 import type { Tool } from '@/lib/tools-data'
 import { ChatTool } from '@/components/tools/ChatTool'
 import { PdfTool } from '@/components/tools/PdfTool'
+import { KeywordTool } from '@/components/tools/KeywordTool'
+import { UrlTool } from '@/components/tools/UrlTool'
 import { CopyButton } from '@/components/tools/CopyButton'
 
 async function apiGenerate(prompt: string, toolSlug: string): Promise<string> {
   const res = await fetch(
-    `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000'}/api/v1/ai/generate/`,
+    `${process.env.NEXT_PUBLIC_API_URL ?? 'http://localhost:8000'}/api/v1/generate/`,
     {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
@@ -24,6 +26,9 @@ async function apiGenerate(prompt: string, toolSlug: string): Promise<string> {
 export function ToolClient({ tool }: { tool: Tool }) {
   if (tool.slug === 'ai-assistant') return <ChatTool generate={(p) => apiGenerate(p, tool.slug)} />
   if (tool.slug === 'ai-pdf-reader') return <PdfTool generate={(p) => apiGenerate(p, tool.slug)} />
+  if (tool.slug === 'keyword-research') return <KeywordTool />
+  if (tool.slug === 'seo-audit') return <UrlTool endpoint="seo-audit" />
+  if (tool.slug === 'website-speed') return <UrlTool endpoint="website-speed" />
   return <StandardTool tool={tool} />
 }
 

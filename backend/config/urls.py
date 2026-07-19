@@ -10,6 +10,8 @@ urlpatterns = [
     path('django-admin/', admin.site.urls),
     path('api/v1/', include('apps.api.urls')),
     path('api/v1/', include('apps.api.v1.urls')),
+    # CMS page builder
+    path('cms/pages/', include('apps.cms_custom.urls')),
 ]
 
 if settings.DEBUG:

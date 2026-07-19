@@ -234,7 +234,7 @@ export default function ToolPage({ params }: Props) {
             Explore all AI tools
           </h2>
           <p className="text-sm md:text-base text-text-secondary mb-6 md:mb-8">
-            7+ free tools for writing and productivity.
+            10+ free tools for writing, SEO, and productivity.
           </p>
           <Link href="/ai-tools">
             <Button size="lg">

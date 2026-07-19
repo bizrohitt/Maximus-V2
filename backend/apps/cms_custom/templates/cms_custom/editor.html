@@ -1,0 +1,187 @@
+{% extends 'custom_admin/base.html' %}
+
+{% block page_title %}Page Editor - {{ page.title }}{% endblock %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto" x-data="pageEditor()">
+    <div class="flex justify-between items-center mb-6">
+        <div>
+            <h1 class="text-3xl font-bold">Editing: {{ page.title }}</h1>
+            <p class="text-gray-600">Visual Drag & Drop Editor</p>
+        </div>
+        <div class="flex gap-3">
+            <button @click="previewPage()" class="px-6 py-3 border rounded-2xl">Preview</button>
+            <button @click="savePage()" class="px-6 py-3 bg-[var(--color-secondary)] text-white rounded-2xl">Save Page</button>
+        </div>
+    </div>
+
+    <div class="grid grid-cols-12 gap-6">
+        
+        <!-- Sidebar: Available Blocks -->
+        <div class="col-span-12 md:col-span-3">
+            <div class="bg-white border rounded-2xl p-6 sticky top-6">
+                <h3 class="font-semibold mb-4">Available Blocks</h3>
+                <div class="space-y-2">
+                    {% for block in available_blocks %}
+                    <div 
+                        draggable="true"
+                        @dragstart="startDrag($event, {{ block.id }}, '{{ block.name }}', '{{ block.slug }}')"
+                        class="flex items-center gap-3 p-3 border rounded-xl hover:bg-gray-50 cursor-grab active:cursor-grabbing">
+                        <i class="fa {{ block.icon }}"></i>
+                        <span class="text-sm">{{ block.name }}</span>
+                    </div>
+                    {% empty %}
+                    <p class="text-sm text-gray-500">No blocks available.</p>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Canvas -->
+        <div class="col-span-12 md:col-span-6">
+            <div 
+                class="bg-white border rounded-2xl min-h-[600px] p-6"
+                @drop="dropBlock($event)"
+                @dragover.prevent
+                @dragenter.prevent
+            >
+                <h3 class="font-semibold mb-4">Page Canvas</h3>
+                
+                <template x-for="(block, index) in blocks" :key="index">
+                    <div 
+                        class="border rounded-2xl p-6 bg-white mb-4 shadow-sm cursor-pointer"
+                        @click="editBlock(index)">
+                        
+                        <div class="mb-2">
+                            <span class="font-semibold text-lg" x-text="block.name"></span>
+                        </div>
+
+                        <!-- Dynamic Preview -->
+                        <div class="text-sm text-gray-600">
+                            <template x-if="block.config.heading">
+                                <div><strong>Heading:</strong> <span x-text="block.config.heading"></span></div>
+                            </template>
+                            <template x-if="block.config.subheading">
+                                <div><strong>Subheading:</strong> <span x-text="block.config.subheading"></span></div>
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                <div x-show="blocks.length === 0" class="flex flex-col items-center justify-center h-96 text-center text-gray-500">
+                    <i class="fa fa-layer-group text-4xl mb-4"></i>
+                    <p>Drag blocks from the left to start building your page.</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Dynamic Configuration Panel -->
+        <div class="col-span-12 md:col-span-3">
+            <div class="bg-white border rounded-2xl p-6 sticky top-6">
+                <h3 class="font-semibold mb-4">Block Settings</h3>
+                
+                <div x-show="selectedBlock !== null">
+                    <p class="text-sm mb-4">Editing: <strong x-text="selectedBlock?.name"></strong></p>
+                    
+                    <!-- Fully Dynamic Fields -->
+                    <div class="space-y-4">
+                        <template x-for="(value, key) in selectedBlock.config" :key="key">
+                            <div>
+                                <label class="block text-sm font-medium mb-1" x-text="key"></label>
+                                <input type="text" 
+                                       x-model="selectedBlock.config[key]" 
+                                       class="w-full border border-gray-300 rounded-xl px-4 py-2 text-sm focus:outline-none focus:border-[var(--color-secondary)]">
+                            </div>
+                        </template>
+                    </div>
+                </div>
+                
+                <div x-show="selectedBlock === null" class="text-sm text-gray-500">
+                    Select a block to edit its settings.
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+function pageEditor() {
+    return {
+        blocks: [],
+        selectedBlock: null,
+
+        startDrag(event, blockId, blockName, blockSlug) {
+            event.dataTransfer.setData('blockId', blockId);
+            event.dataTransfer.setData('blockName', blockName);
+            event.dataTransfer.setData('blockSlug', blockSlug);
+        },
+
+        dropBlock(event) {
+            const blockId = event.dataTransfer.getData('blockId');
+            const blockName = event.dataTransfer.getData('blockName');
+            const blockSlug = event.dataTransfer.getData('blockSlug');
+
+            this.blocks.push({
+                id: blockId,
+                name: blockName,
+                slug: blockSlug,
+                config: {}
+            });
+        },
+
+        removeBlock(index) {
+            this.blocks.splice(index, 1);
+            this.selectedBlock = null;
+        },
+
+        moveBlockUp(index) {
+            if (index > 0) {
+                [this.blocks[index], this.blocks[index - 1]] = [this.blocks[index - 1], this.blocks[index]];
+            }
+        },
+
+        moveBlockDown(index) {
+            if (index < this.blocks.length - 1) {
+                [this.blocks[index], this.blocks[index + 1]] = [this.blocks[index + 1], this.blocks[index]];
+            }
+        },
+
+        editBlock(index) {
+            this.selectedBlock = this.blocks[index];
+        },
+
+        savePage() {
+            const blocksToSave = this.blocks.map((block, index) => ({
+                id: block.id,
+                name: block.name,
+                slug: block.slug,
+                position: index,
+                config: block.config || {}
+            }));
+
+            fetch(`/cms_custom/save-page/{{ page.id }}`, {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': '{{ csrf_token }}'
+                },
+                body: JSON.stringify({ blocks: blocksToSave })
+            })
+            .then(res => res.json())
+            .then(data => {
+                if (data.success) {
+                    alert(`Page saved successfully! (${data.blocks_saved} blocks)`);
+                } else {
+                    alert('Error saving page: ' + (data.error || 'Unknown error'));
+                }
+            });
+        },
+
+        previewPage() {
+            window.open('/preview/{{ page.id }}', '_blank');
+        }
+    }
+}
+</script>
+{% endblock %}

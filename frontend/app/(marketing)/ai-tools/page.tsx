@@ -6,7 +6,7 @@ import { categories, getToolsByCategory } from '@/lib/tools-data'
 
 export const metadata: Metadata = {
   title: 'AI Tools',
-  description: 'Free AI tools for writing and productivity — no account required. Generate blog posts, headlines, emails, and more.',
+  description: 'Free AI tools for writing, SEO, and productivity — no account required. Generate blog posts, headlines, emails, and more.',
   keywords: ['free AI tools', 'AI writing tools', 'AI productivity tools', 'AI content creation'],
   alternates: { canonical: '/ai-tools' },
   openGraph: {
@@ -25,7 +25,7 @@ export default function AIToolsPage() {
           <div className="max-w-3xl">
             <div className="inline-flex items-center gap-2 px-3 md:px-4 py-2 rounded-full bg-secondary/10 text-xs md:text-sm font-medium text-secondary mb-4 md:mb-6">
               <Sparkles size={14} />
-              7 tools — completely free, no account required
+              10+ tools — completely free, no account required
             </div>
             <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-text-primary mb-4 md:mb-6">
               AI Content Tools
