@@ -1,0 +1,74 @@
+{% extends "custom_admin/base.html" %}
+
+{% block title %}Content — Maximus Admin{% endblock %}
+{% block page_title %}Content Management{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    <!-- Blog -->
+    <a href="/cms/" class="bg-white rounded-xl border border-gray-200 p-6 hover:border-gray-300 transition-colors">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background-color: #DBEAFE">
+            <svg class="w-6 h-6 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 20H5a2 2 0 01-2-2V6a2 2 0 012-2h10a2 2 0 012 2v1m2 13a2 2 0 01-2-2V7m2 13a2 2 0 002-2V9a2 2 0 00-2-2h-2m-4-3H9M7 16h6M7 8h6v4H7V8z"/>
+            </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900">Blog Posts</h3>
+        <p class="text-sm text-gray-500 mt-1">Manage blog content via Wagtail CMS</p>
+    </a>
+
+    <!-- Resources -->
+    <a href="/django-admin/resources/resource/" class="bg-white rounded-xl border border-gray-200 p-6 hover:border-gray-300 transition-colors">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background-color: #FEF3C7">
+            <svg class="w-6 h-6 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 21h10a2 2 0 002-2V9.414a1 1 0 00-.293-.707l-5.414-5.414A1 1 0 0012.586 3H7a2 2 0 00-2 2v14a2 2 0 002 2z"/>
+            </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900">Resource Library</h3>
+        <p class="text-sm text-gray-500 mt-1">Upload and manage downloadable resources</p>
+    </a>
+
+    <!-- Directories -->
+    <a href="/django-admin/directories/directoryentry/" class="bg-white rounded-xl border border-gray-200 p-6 hover:border-gray-300 transition-colors">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background-color: #D1FAE5">
+            <svg class="w-6 h-6 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/>
+            </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900">Directories</h3>
+        <p class="text-sm text-gray-500 mt-1">Manage curated directory listings</p>
+    </a>
+
+    <!-- Pages (Wagtail) -->
+    <a href="/cms/" class="bg-white rounded-xl border border-gray-200 p-6 hover:border-gray-300 transition-colors">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background-color: #EDE9FE">
+            <svg class="w-6 h-6 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 5a1 1 0 011-1h14a1 1 0 011 1v2a1 1 0 01-1 1H5a1 1 0 01-1-1V5zM4 13a1 1 0 011-1h6a1 1 0 011 1v6a1 1 0 01-1 1H5a1 1 0 01-1-1v-6zM16 13a1 1 0 011-1h2a1 1 0 011 1v6a1 1 0 01-1 1h-2a1 1 0 01-1-1v-6z"/>
+            </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900">Pages</h3>
+        <p class="text-sm text-gray-500 mt-1">Manage site pages via Wagtail</p>
+    </a>
+
+    <!-- Images (Wagtail) -->
+    <a href="/cms/images/" class="bg-white rounded-xl border border-gray-200 p-6 hover:border-gray-300 transition-colors">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background-color: #FCE7F3">
+            <svg class="w-6 h-6 text-pink-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 16l4.586-4.586a2 2 0 012.828 0L16 16m-2-2l1.586-1.586a2 2 0 012.828 0L20 14m-6-6h.01M6 20h12a2 2 0 002-2V6a2 2 0 00-2-2H6a2 2 0 00-2 2v12a2 2 0 002 2z"/>
+            </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900">Images</h3>
+        <p class="text-sm text-gray-500 mt-1">Manage media library</p>
+    </a>
+
+    <!-- Documents (Wagtail) -->
+    <a href="/cms/documents/" class="bg-white rounded-xl border border-gray-200 p-6 hover:border-gray-300 transition-colors">
+        <div class="w-12 h-12 rounded-xl flex items-center justify-center mb-4" style="background-color: #FEE2E2">
+            <svg class="w-6 h-6 text-red-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z"/>
+            </svg>
+        </div>
+        <h3 class="text-lg font-semibold text-gray-900">Documents</h3>
+        <p class="text-sm text-gray-500 mt-1">Manage uploaded documents</p>
+    </a>
+</div>
+{% endblock %}

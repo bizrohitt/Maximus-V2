@@ -1,0 +1,57 @@
+{% extends "custom_admin/base.html" %}
+{% load admin_tags %}
+
+{% block title %}Analytics — Maximus Admin{% endblock %}
+{% block page_title %}Analytics{% endblock %}
+
+{% block content %}
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6 mb-6">
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <span class="text-sm font-medium text-gray-500">Total Events</span>
+        <p class="text-2xl font-bold text-gray-900 mt-2">{{ revenue_data|length }}</p>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <span class="text-sm font-medium text-gray-500">Revenue Days Tracked</span>
+        <p class="text-2xl font-bold text-gray-900 mt-2">{{ revenue_data|length }}</p>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <span class="text-sm font-medium text-gray-500">Quick Links</span>
+        <div class="mt-2 space-y-1">
+            <a href="/django-admin/analytics/analyticsevent/" class="block text-sm font-medium" style="color: var(--color-secondary)">Events Log</a>
+            <a href="/django-admin/analytics/pageview/" class="block text-sm font-medium" style="color: var(--color-secondary)">Page Views</a>
+            <a href="/django-admin/analytics/dailyrevenue/" class="block text-sm font-medium" style="color: var(--color-secondary)">Revenue Data</a>
+        </div>
+    </div>
+</div>
+
+<!-- Revenue Table -->
+<div class="bg-white rounded-xl border border-gray-200">
+    <div class="px-6 py-4 border-b border-gray-200">
+        <h2 class="text-lg font-semibold text-gray-900">Daily Revenue (Last 30 Days)</h2>
+    </div>
+    <div class="overflow-x-auto">
+        <table class="w-full">
+            <thead class="bg-gray-50">
+                <tr>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Date</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Revenue</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Orders</th>
+                    <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">AI Calls</th>
+                </tr>
+            </thead>
+            <tbody class="divide-y divide-gray-200">
+                {% for day in revenue_data %}
+                <tr class="hover:bg-gray-50">
+                    <td class="px-6 py-4 text-sm text-gray-900">{{ day.date }}</td>
+                    <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ day.total_revenue|currency }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600">{{ day.total_orders }}</td>
+                    <td class="px-6 py-4 text-sm text-gray-600">{{ day.total_ai_calls }}</td>
+                </tr>
+                {% empty %}
+                <tr><td colspan="4" class="px-6 py-8 text-center text-sm text-gray-500">No revenue data yet</td></tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

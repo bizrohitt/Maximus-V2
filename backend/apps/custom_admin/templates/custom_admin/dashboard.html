@@ -1,0 +1,143 @@
+{% extends "custom_admin/base.html" %}
+{% load admin_tags %}
+
+{% block title %}Dashboard — Maximus Admin{% endblock %}
+{% block page_title %}Dashboard{% endblock %}
+
+{% block content %}
+<!-- Stats Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-8">
+    <!-- Revenue -->
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-4">
+            <span class="text-sm font-medium text-gray-500">Total Revenue</span>
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: #ECFDF5">
+                <svg class="w-5 h-5" style="color: var(--color-accent)" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z"/>
+                </svg>
+            </div>
+        </div>
+        <p class="text-3xl font-bold text-gray-900">{{ total_revenue|currency }}</p>
+        <p class="text-sm text-gray-500 mt-1">{{ revenue_30d|currency }} last 30 days</p>
+    </div>
+
+    <!-- Orders -->
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-4">
+            <span class="text-sm font-medium text-gray-500">Total Orders</span>
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: #FEF3C7">
+                <svg class="w-5 h-5 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z"/>
+                </svg>
+            </div>
+        </div>
+        <p class="text-3xl font-bold text-gray-900">{{ total_orders }}</p>
+        <p class="text-sm text-gray-500 mt-1">{{ orders_30d }} last 30 days</p>
+    </div>
+
+    <!-- Users -->
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-4">
+            <span class="text-sm font-medium text-gray-500">Total Users</span>
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: #EDE9FE">
+                <svg class="w-5 h-5 text-purple-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"/>
+                </svg>
+            </div>
+        </div>
+        <p class="text-3xl font-bold text-gray-900">{{ total_users }}</p>
+        <p class="text-sm text-gray-500 mt-1">{{ new_users_30d }} new last 30 days</p>
+    </div>
+
+    <!-- AI Calls -->
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <div class="flex items-center justify-between mb-4">
+            <span class="text-sm font-medium text-gray-500">AI Usage</span>
+            <div class="w-10 h-10 rounded-lg flex items-center justify-center" style="background-color: #DBEAFE">
+                <svg class="w-5 h-5 text-blue-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9.663 17h4.673M12 3v1m6.364 1.636l-.707.707M21 12h-1M4 12H3m3.343-5.657l-.707-.707m2.828 9.9a5 5 0 117.072 0l-.548.547A3.374 3.374 0 0014 18.469V19a2 2 0 11-4 0v-.531c0-.895-.356-1.754-.988-2.386l-.548-.547z"/>
+                </svg>
+            </div>
+        </div>
+        <p class="text-3xl font-bold text-gray-900">{{ total_ai_calls|short_number }}</p>
+        <p class="text-sm text-gray-500 mt-1">{{ ai_calls_30d }} last 30 days</p>
+    </div>
+</div>
+
+<!-- Second Row Stats -->
+<div class="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <span class="text-sm font-medium text-gray-500">Total Downloads</span>
+        <p class="text-2xl font-bold text-gray-900 mt-2">{{ total_downloads|short_number }}</p>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <span class="text-sm font-medium text-gray-500">Page Views (30d)</span>
+        <p class="text-2xl font-bold text-gray-900 mt-2">{{ page_views_30d|short_number }}</p>
+    </div>
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <span class="text-sm font-medium text-gray-500">Active Plugins</span>
+        <p class="text-2xl font-bold text-gray-900 mt-2">{{ total_plugins }}</p>
+    </div>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+    <!-- Recent Orders -->
+    <div class="lg:col-span-2 bg-white rounded-xl border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-gray-900">Recent Orders</h2>
+            <a href="{% url 'custom_admin:commerce' %}" class="text-sm font-medium" style="color: var(--color-secondary)">View All</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Email</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Product</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Amount</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase tracking-wider">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for order in recent_orders %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 text-sm text-gray-900">{{ order.email }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-600">{{ order.product.name|truncatechars:30 }}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ order.amount|currency }}</td>
+                        <td class="px-6 py-4">
+                            <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium
+                                {% if order.status == 'paid' %}bg-green-100 text-green-800
+                                {% elif order.status == 'pending' %}bg-yellow-100 text-yellow-800
+                                {% elif order.status == 'delivered' %}bg-blue-100 text-blue-800
+                                {% else %}bg-red-100 text-red-800{% endif %}">
+                                {{ order.status|title }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr>
+                        <td colspan="4" class="px-6 py-8 text-center text-sm text-gray-500">No orders yet</td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Top Events -->
+    <div class="bg-white rounded-xl border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900">Top Events (30d)</h2>
+        </div>
+        <div class="p-6 space-y-4">
+            {% for event in top_events %}
+            <div class="flex items-center justify-between">
+                <span class="text-sm text-gray-700">{{ event.event_type }}</span>
+                <span class="text-sm font-semibold text-gray-900">{{ event.count }}</span>
+            </div>
+            {% empty %}
+            <p class="text-sm text-gray-500 text-center py-4">No events recorded</p>
+            {% endfor %}
+        </div>
+    </div>
+</div>
+{% endblock %}

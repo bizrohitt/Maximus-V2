@@ -1,0 +1,98 @@
+{% extends "custom_admin/base.html" %}
+{% load admin_tags %}
+
+{% block title %}Commerce — Maximus Admin{% endblock %}
+{% block page_title %}Commerce{% endblock %}
+
+{% block content %}
+<!-- Quick Actions -->
+<div class="flex gap-3 mb-6">
+    <a href="/django-admin/downloads/downloadproduct/add/" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-white" style="background-color: var(--color-secondary)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        Add Product
+    </a>
+    <a href="/django-admin/downloads/order/" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">
+        View All Orders
+    </a>
+    <a href="/django-admin/downloads/coupon/" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">
+        Manage Coupons
+    </a>
+</div>
+
+<div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+    <!-- Products -->
+    <div class="bg-white rounded-xl border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200 flex items-center justify-between">
+            <h2 class="text-lg font-semibold text-gray-900">Products</h2>
+            <a href="/django-admin/downloads/downloadproduct/" class="text-sm font-medium" style="color: var(--color-secondary)">View All</a>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Downloads</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Active</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for product in products %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ product.name|truncatechars:30 }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-900">{{ product.price|currency }}</td>
+                        <td class="px-6 py-4 text-sm text-gray-600">{{ product.download_count }}</td>
+                        <td class="px-6 py-4">
+                            {% if product.is_active %}
+                            <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-green-100 text-green-800">Active</span>
+                            {% else %}
+                            <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium bg-gray-100 text-gray-600">Inactive</span>
+                            {% endif %}
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="4" class="px-6 py-8 text-center text-sm text-gray-500">No products yet</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+
+    <!-- Recent Orders -->
+    <div class="bg-white rounded-xl border border-gray-200">
+        <div class="px-6 py-4 border-b border-gray-200">
+            <h2 class="text-lg font-semibold text-gray-900">Recent Orders</h2>
+        </div>
+        <div class="overflow-x-auto">
+            <table class="w-full">
+                <thead class="bg-gray-50">
+                    <tr>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Email</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Amount</th>
+                        <th class="px-6 py-3 text-left text-xs font-medium text-gray-500 uppercase">Status</th>
+                    </tr>
+                </thead>
+                <tbody class="divide-y divide-gray-200">
+                    {% for order in recent_orders %}
+                    <tr class="hover:bg-gray-50">
+                        <td class="px-6 py-4 text-sm text-gray-900">{{ order.email }}</td>
+                        <td class="px-6 py-4 text-sm font-medium text-gray-900">{{ order.amount|currency }}</td>
+                        <td class="px-6 py-4">
+                            <span class="inline-flex px-2.5 py-0.5 rounded-full text-xs font-medium
+                                {% if order.status == 'paid' %}bg-green-100 text-green-800
+                                {% elif order.status == 'pending' %}bg-yellow-100 text-yellow-800
+                                {% elif order.status == 'delivered' %}bg-blue-100 text-blue-800
+                                {% else %}bg-red-100 text-red-800{% endif %}">
+                                {{ order.status|title }}
+                            </span>
+                        </td>
+                    </tr>
+                    {% empty %}
+                    <tr><td colspan="3" class="px-6 py-8 text-center text-sm text-gray-500">No orders yet</td></tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+{% endblock %}

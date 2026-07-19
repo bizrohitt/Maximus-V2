@@ -1,0 +1,47 @@
+{% extends "custom_admin/base.html" %}
+
+{% block title %}Extensions — Maximus Admin{% endblock %}
+{% block page_title %}Extensions & Plugins{% endblock %}
+
+{% block content %}
+<div class="flex gap-3 mb-6">
+    <a href="/django-admin/plugins/plugin/add/" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium text-white" style="background-color: var(--color-secondary)">
+        <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"/></svg>
+        Add Plugin
+    </a>
+    <a href="/django-admin/plugins/pluginreview/" class="inline-flex items-center gap-2 px-4 py-2.5 rounded-lg text-sm font-medium border border-gray-300 text-gray-700 hover:bg-gray-50">
+        View Reviews
+    </a>
+</div>
+
+<!-- Plugins Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+    {% for plugin in plugins %}
+    <div class="bg-white rounded-xl border border-gray-200 p-6">
+        <div class="flex items-start justify-between mb-3">
+            <div>
+                <h3 class="text-lg font-semibold text-gray-900">{{ plugin.name }}</h3>
+                <p class="text-xs text-gray-500">v{{ plugin.version }} by {{ plugin.author }}</p>
+            </div>
+            <span class="inline-flex px-2 py-0.5 rounded-full text-xs font-medium
+                {% if plugin.is_active %}bg-green-100 text-green-800{% else %}bg-gray-100 text-gray-600{% endif %}">
+                {% if plugin.is_active %}Active{% else %}Inactive{% endif %}
+            </span>
+        </div>
+        <p class="text-sm text-gray-600 mb-3">{{ plugin.description|truncatechars:120 }}</p>
+        <div class="flex items-center justify-between text-xs text-gray-500">
+            <span>{{ plugin.download_count }} downloads</span>
+            <span class="font-medium text-gray-900">${{ plugin.price }}</span>
+        </div>
+    </div>
+    {% empty %}
+    <div class="col-span-3 bg-white rounded-xl border border-gray-200 p-12 text-center">
+        <svg class="w-12 h-12 mx-auto text-gray-300 mb-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4"/>
+        </svg>
+        <p class="text-gray-500">No plugins installed yet</p>
+        <p class="text-sm text-gray-400 mt-1">Install plugins to extend Maximus functionality</p>
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}

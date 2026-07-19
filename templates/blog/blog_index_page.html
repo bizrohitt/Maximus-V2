@@ -1,0 +1,18 @@
+{% extends "base.html" %}
+
+{% block content %}
+<div class="max-w-7xl mx-auto px-6 py-16">
+    <h1 class="text-5xl font-bold mb-4">{{ page.title }}</h1>
+    <div class="prose max-w-none">
+        {{ page.intro|safe }}
+    </div>
+    
+    <div class="mt-12 grid gap-8 md:grid-cols-2 lg:grid-cols-3">
+        {% for post in page.get_children.specific %}
+        <a href="{{ post.url }}" class="block p-6 border rounded-xl hover:shadow-md transition">
+            <h3 class="font-semibold text-xl">{{ post.title }}</h3>
+        </a>
+        {% endfor %}
+    </div>
+</div>
+{% endblock %}
