@@ -6,7 +6,7 @@
     "predev": "node -e \"const fs=require('fs');try{fs.rmSync('.next',{recursive:true,force:true})}catch{}\"",
     "dev": "next dev --turbo",
     "dev:fix": "powershell -ExecutionPolicy Bypass -File scripts/start-dev.ps1",
-    "build": "node scripts/generate-favicon.js && next build",
+    "build": "next build",
     "start": "next start",
     "lint": "next lint",
     "generate:favicon": "node scripts/generate-favicon.js",
